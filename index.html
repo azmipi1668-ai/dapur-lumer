@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dapur Lumer - Camilan Premium Homemade</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
@@ -260,6 +259,20 @@
         footer { background: var(--cokelat-utama); color: var(--cream); text-align: center; padding: 3rem 1rem; margin-top: 4rem; }
         footer h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem; color: var(--cream); }
 
+        .db-status {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 998;
+            display: none;
+        }
+        .db-status.online { background: var(--hijau-sage); color: white; display: block; }
+        .db-status.offline { background: var(--merah-cabai); color: white; display: block; }
+
         @media (max-width: 768px) {
             header { padding: 0.5rem 4%; }
             .logo img { height: 70px; }
@@ -406,6 +419,8 @@
 
     <a href="https://wa.me/6285893704080" class="floating-wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
+    <div id="dbStatus" class="db-status"></div>
+
     <div id="cartModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: flex-end;">
         <div style="background: white; width: 100%; max-width: 400px; height: 100%; padding: 1.5rem; overflow-y: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
@@ -424,27 +439,9 @@
 
     <script>
         // ==========================================
-        // KONFIGURASI SUPABASE
+        // DATA MENU LOKAL (PASTI MUNCUL)
         // ==========================================
-        const SUPABASE_URL = 'https://gbjtomwkvdgkldzvxnhx.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdianRvbXdrdmRna2xkenZ4bmh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTYyNTIsImV4cCI6MjEwNTYzMjI1Mn0.S7_uRMfLAHslD_mA0aqfkgaMmWQues_Agg1GdmV1G_U';
-        
-        let supabase = null;
-        try {
-            if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('✅ Supabase connected');
-            } else {
-                console.warn('⚠️ Supabase SDK not loaded');
-            }
-        } catch (e) {
-            console.error('❌ Supabase init error:', e);
-        }
-
-        // ==========================================
-        // DATA FALLBACK (jika Supabase gagal)
-        // ==========================================
-        const fallbackMenu = [
+        const localMenu = [
             { id: 1, nama: "Fudgy Brownies Original", kategori: "manis", harga: 25000, deskripsi: "Brownies cokelat premium dengan tekstur super fudgy dan lumer di setiap gigitan.", badge: "Best Seller", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=600&q=80" },
             { id: 2, nama: "Fudgy Brownies Choco Chips", kategori: "manis", harga: 28000, deskripsi: "Brownies fudgy dengan lelehan choco chips yang meledak di mulut.", badge: "Favorit", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=600&q=80" },
             { id: 3, nama: "Cireng Isi Ayam Pedas", kategori: "pedas", harga: 15000, deskripsi: "Cireng renyah di luar, lembut di dalam, diisi dengan ayam suwir berbumbu pedas.", badge: "Pedas", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80" },
@@ -457,7 +454,25 @@
             { id: 10, nama: "Paket Manis", kategori: "paket", harga: 45000, deskripsi: "Fudgy Brownies + Puding Cokelat + Es Cokelat.", badge: "Hemat", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&q=80" }
         ];
 
-        let menuData = fallbackMenu; // Default pakai fallback
+        // ==========================================
+        // KONFIGURASI SUPABASE
+        // ==========================================
+        const SUPABASE_URL = 'https://gbjtomwkvdgkldzvxnhx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdianRvbXdrdmRna2xkenZ4bmh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTYyNTIsImV4cCI6MjEwNTYzMjI1Mn0.S7_uRMfLAHslD_mA0aqfkgaMmWQues_Agg1GdmV1G_U';
+        
+        let supabase = null;
+        let useSupabase = false;
+
+        try {
+            if (window.supabase) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('✅ Supabase client created');
+            }
+        } catch (e) {
+            console.warn('⚠️ Supabase init error:', e);
+        }
+
+        let menuData = localMenu;
         let cart = [];
         const defaultTestimoni = [
             { name: "Siti R.", rating: 5, comment: "Browniesnya beneran lumer di mulut! Gak terlalu manis, pas banget.", date: "2 hari lalu" },
@@ -468,15 +483,45 @@
         let selectedRating = 0;
 
         // ==========================================
-        // FUNGSI RENDER MENU (dengan fallback)
+        // RENDER MENU (PASTI BERFUNGSI)
         // ==========================================
+        function renderMenuNow(products, filter = 'semua') {
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = '';
+            
+            const filtered = filter === 'semua' ? products : products.filter(p => p.kategori === filter);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;">Belum ada menu di kategori ini.</p>';
+                return;
+            }
+            
+            filtered.forEach(p => {
+                let badgeClass = '';
+                if (p.badge === 'Best Seller') badgeClass = 'best';
+                else if (p.badge === 'Favorit') badgeClass = 'favorit';
+                
+                const badgeHTML = p.badge ? '<div class="badge ' + badgeClass + '">' + p.badge + '</div>' : '';
+                const harga = Number(p.harga) || 0;
+                const img = p.gambar_url || 'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=Menu';
+                
+                grid.innerHTML += '<div class="product-card">' + badgeHTML + 
+                    '<img src="' + img + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=' + encodeURIComponent(p.nama) + '\'">' +
+                    '<div class="product-info"><h3>' + p.nama + '</h3>' +
+                    '<p class="product-tagline">"' + (p.deskripsi || '') + '"</p>' +
+                    '<div class="product-footer"><div class="price">Rp' + harga.toLocaleString('id-ID') + '</div>' +
+                    '<button class="add-btn" onclick="addToCart(' + p.id + ')"><i class="fas fa-plus"></i></button></div></div></div>';
+            });
+        }
+
         async function renderMenu(filter = 'semua') {
             const grid = document.getElementById('menuGrid');
+            const statusEl = document.getElementById('dbStatus');
+            
+            // Tampilkan loading singkat
             grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;"><i class="fas fa-spinner fa-spin"></i> Memuat menu...</p>';
             
-            let products = fallbackMenu; // Default fallback
-            
-            // Coba ambil dari Supabase
+            // Coba Supabase
             if (supabase) {
                 try {
                     let query = supabase.from('menu').select('*').eq('tersedia', true);
@@ -487,46 +532,38 @@
                     const { data, error } = await query;
                     
                     if (error) {
-                        console.warn('⚠️ Supabase error, pakai fallback:', error.message);
+                        console.warn('️ Supabase error:', error.message);
+                        showStatus('offline', 'Mode Offline');
+                        menuData = localMenu;
                     } else if (data && data.length > 0) {
-                        products = data;
-                        console.log('✅ Menu loaded from Supabase:', products.length, 'items');
+                        console.log('✅ Supabase connected! Items:', data.length);
+                        showStatus('online', '● Live Database');
+                        menuData = data;
+                        useSupabase = true;
                     } else {
-                        console.warn('⚠️ No data from Supabase, pakai fallback');
+                        console.warn('⚠️ No data from Supabase');
+                        showStatus('offline', 'Mode Offline');
+                        menuData = localMenu;
                     }
                 } catch (e) {
-                    console.warn('⚠️ Supabase fetch failed, pakai fallback:', e.message);
+                    console.warn('⚠️ Supabase fetch failed:', e.message);
+                    showStatus('offline', 'Mode Offline');
+                    menuData = localMenu;
                 }
+            } else {
+                showStatus('offline', 'Mode Offline');
+                menuData = localMenu;
             }
             
-            // Filter fallback jika perlu
-            if (filter !== 'semua') {
-                products = products.filter(p => p.kategori === filter);
-            }
-            
-            menuData = products;
-            grid.innerHTML = '';
-            
-            if (products.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;">Belum ada menu di kategori ini.</p>';
-                return;
-            }
-            
-            products.forEach(p => {
-                let badgeClass = '';
-                if (p.badge === 'Best Seller') badgeClass = 'best';
-                else if (p.badge === 'Favorit') badgeClass = 'favorit';
-                
-                const badgeHTML = p.badge ? '<div class="badge ' + badgeClass + '">' + p.badge + '</div>' : '';
-                const harga = Number(p.harga) || 0;
-                
-                grid.innerHTML += '<div class="product-card">' + badgeHTML + 
-                    '<img src="' + (p.gambar_url || 'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=Menu') + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=' + encodeURIComponent(p.nama) + '\'">' +
-                    '<div class="product-info"><h3>' + p.nama + '</h3>' +
-                    '<p class="product-tagline">"' + (p.deskripsi || '') + '"</p>' +
-                    '<div class="product-footer"><div class="price">Rp' + harga.toLocaleString('id-ID') + '</div>' +
-                    '<button class="add-btn" onclick="addToCart(' + p.id + ')"><i class="fas fa-plus"></i></button></div></div></div>';
-            });
+            // Render (dari Supabase atau fallback)
+            renderMenuNow(menuData, filter);
+        }
+
+        function showStatus(type, text) {
+            const el = document.getElementById('dbStatus');
+            el.className = 'db-status ' + type;
+            el.innerText = text;
+            setTimeout(() => { el.style.display = 'none'; }, 3000);
         }
 
         function filterMenu(category, btn) {
@@ -677,7 +714,7 @@
         }
         startAutoSlide();
 
-        // Initialize
+        // Initialize - PASTI JALAN
         renderMenu();
         renderTestimoni();
     </script>
