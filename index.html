@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dapur Lumer - Camilan Premium Homemade</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --cokelat-utama: #5A2E22;
+            --cream: #FFF3DF;
+            --cokelat-muda: #C98254;
+            --merah-cabai: #C84630;
+            --emas: #D4AF37;
+            --hijau-sage: #78966B;
+            --teks-gelap: #2B211E;
+            --putih: #FFFFFF;
+            --shadow: 0 4px 15px rgba(90, 46, 34, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--cream);
+            color: var(--teks-gelap);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--cokelat-utama); }
+
+        .promo-banner {
+            background: linear-gradient(90deg, var(--merah-cabai), #E0554D);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        header {
+            background: var(--putih);
+            padding: 0.5rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 90px;
+            width: auto;
+            transition: 0.3s;
+        }
+        
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        
+        .cart-btn {
+            background: var(--cokelat-utama);
+            color: var(--putih);
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(90, 46, 34, 0.3);
+        }
+        .cart-btn:hover { background: var(--merah-cabai); transform: translateY(-2px); }
+        .cart-count { 
+            background: var(--merah-cabai); color: white; border-radius: 50%; 
+            width: 24px; height: 24px; display: flex; align-items: center; 
+            justify-content: center; font-size: 0.8rem; font-weight: 800;
+        }
+
+        .hero-slider {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+        }
+        .slide.active { opacity: 1; }
+        .slide-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4);
+            transform: scale(1);
+            transition: transform 6s ease;
+        }
+        .slide.active .slide-bg { transform: scale(1.1); }
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            color: white;
+            animation: slideUp 1s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .discount-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--emas), #F0C84A);
+            color: var(--cokelat-utama);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        .slide h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            color: white;
+        }
+        .slide .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+        .slide .price-tag { 
+            font-size: 2.2rem; 
+            font-weight: 800; 
+            margin-bottom: 1.5rem;
+            color: var(--emas);
+        }
+        .btn-order {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, var(--emas), #F0C84A);
+            color: var(--cokelat-utama);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+        .btn-order:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6); }
+        .slider-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .dot.active { background: var(--emas); width: 30px; border-radius: 6px; }
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 10;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .slider-arrow:hover { background: rgba(255,255,255,0.4); transform: translateY(-50%) scale(1.1); }
+        .slider-arrow.prev { left: 20px; }
+        .slider-arrow.next { right: 20px; }
+
+        .keunggulan {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 3rem 5%;
+            text-align: center;
+            background: white;
+        }
+        .keunggulan-item i { font-size: 2.5rem; color: var(--hijau-sage); margin-bottom: 0.8rem; transition: 0.3s; }
+        .keunggulan-item:hover i { transform: scale(1.2); color: var(--merah-cabai); }
+        .keunggulan-item h4 { font-size: 1.1rem; margin-bottom: 0.3rem; font-weight: 700; }
+
+        .cara-pesan {
+            background: linear-gradient(135deg, var(--cream), #FFF8E8);
+            padding: 4rem 5%;
+            text-align: center;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--cokelat-utama);
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .step-item { 
+            background: white; padding: 2rem; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s;
+        }
+        .step-item:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+        .step-icon {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, var(--cokelat-muda), var(--merah-cabai));
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(201, 130, 84, 0.4);
+        }
+        .step-item h4 { margin-bottom: 0.8rem; font-weight: 700; color: var(--cokelat-utama); }
+        .step-item p { font-size: 0.95rem; color: #666; }
+
+        .menu-section { padding: 4rem 5%; }
+        .filter-btns {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--cokelat-muda);
+            color: var(--cokelat-utama);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .filter-btn.active, .filter-btn:hover { 
+            background: var(--cokelat-utama); color: white; 
+            border-color: var(--cokelat-utama); transform: translateY(-2px);
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            position: relative;
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .product-image { width: 100%; height: 220px; object-fit: cover; }
+        .badge {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: linear-gradient(135deg, var(--emas), #F0C84A);
+            color: var(--cokelat-utama);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            z-index: 2;
+        }
+        .badge.best { background: linear-gradient(135deg, var(--merah-cabai), #FF6B6B); color: white; }
+        .badge.favorit { background: linear-gradient(135deg, var(--hijau-sage), #8FB07C); color: white; }
+        .product-info { padding: 1.5rem; }
+        .product-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--cokelat-utama); }
+        .product-tagline { font-size: 0.9rem; color: #666; margin-bottom: 1rem; font-style: italic; line-height: 1.5; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .price { font-weight: 800; color: var(--merah-cabai); font-size: 1.4rem; }
+        .add-btn {
+            background: linear-gradient(135deg, var(--cokelat-utama), var(--merah-cabai));
+            color: white;
+            border: none;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(90, 46, 34, 0.3);
+        }
+        .add-btn:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 6px 20px rgba(200, 70, 48, 0.5); }
+
+        .testimoni-section { background: var(--putih); padding: 4rem 5%; margin: 2rem 0; }
+        .testimoni-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .testimoni-card { background: var(--cream); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); transition: 0.3s; }
+        .testimoni-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .testimoni-card .stars { color: #FFD700; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .testimoni-card .comment { font-style: italic; color: var(--teks-gelap); margin-bottom: 1rem; }
+        .testimoni-card .author { font-weight: 700; color: var(--cokelat-utama); font-size: 0.9rem; }
+        .form-testimoni { max-width: 500px; margin: 2rem auto 0; background: var(--cream); padding: 1.5rem; border-radius: 12px; }
+        .form-testimoni h4 { margin-bottom: 1rem; text-align: center; }
+        .star-rating { display: flex; justify-content: center; gap: 0.5rem; margin: 1rem 0; font-size: 1.5rem; cursor: pointer; }
+        .star-rating i { color: #ddd; transition: 0.2s; }
+        .star-rating i.active, .star-rating i:hover { color: #FFD700; }
+        .form-testimoni input, .form-testimoni textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem; font-family: inherit; }
+        .btn-submit-testimoni { background: var(--cokelat-utama); color: white; border: none; padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; width: 100%; }
+        .btn-submit-testimoni:hover { background: var(--merah-cabai); }
+
+        .faq-section { padding: 4rem 5%; max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--putih); margin-bottom: 1rem; border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+        .faq-item summary { padding: 1.2rem; cursor: pointer; font-weight: 700; color: var(--cokelat-utama); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: '+'; font-size: 1.5rem; color: var(--merah-cabai); transition: 0.3s; }
+        .faq-item[open] summary::after { transform: rotate(45deg); }
+        .faq-item p { padding: 0 1.2rem 1.2rem; color: #555; font-size: 0.95rem; }
+
+        .floating-wa {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: #25D366;
+            color: white;
+            width: 65px; height: 65px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+            z-index: 999;
+            text-decoration: none;
+            transition: 0.3s;
+            animation: pulse-wa 2s infinite;
+        }
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+        .floating-wa:hover { transform: scale(1.1); }
+
+        footer { background: var(--cokelat-utama); color: var(--cream); text-align: center; padding: 3rem 1rem; margin-top: 4rem; }
+        footer h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem; color: var(--cream); }
+
+        @media (max-width: 768px) {
+            header { padding: 0.5rem 4%; }
+            .logo img { height: 70px; }
+            .hero-slider { height: 500px; }
+            .slide h1 { font-size: 2rem; }
+            .slide .tagline { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .menu-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 480px) {
+            .logo img { height: 60px; }
+            .cart-btn span:not(.cart-count) { display: none; }
+            .cart-btn { padding: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="promo-banner">
+         GRATIS ONGKIR untuk pemesanan minimal Rp50.000 area Cibodas! ❤️
+    </div>
+
+    <header>
+        <a href="#" class="logo">
+            <img src="https://i.imgur.com/wKy7oJk.jpeg" alt="Dapur Lumer">
+        </a>
+        <button class="cart-btn" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i> 
+            <span>Keranjang</span>
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <section class="hero-slider">
+        <div class="slide active">
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-content">
+                <div class="discount-badge">⭐ BEST SELLER</div>
+                <h1>Fudgy Brownies Original</h1>
+                <p class="tagline">"Brownies cokelat premium dengan tekstur super fudgy dan lumer di setiap gigitan!"</p>
+                <div class="price-tag">Rp25.000</div>
+                <a href="#menu" class="btn-order"><i class="fas fa-shopping-bag"></i> Pesan Sekarang</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-content">
+                <div class="discount-badge">🎁 POPULER</div>
+                <h1>Paket Ngemil Santai</h1>
+                <p class="tagline">"Paket lengkap untuk ngemil bareng! Cireng Isi + Risol Mayo + Es Teh Manis."</p>
+                <div class="price-tag">Rp41.000</div>
+                <a href="#menu" class="btn-order"><i class="fas fa-gift"></i> Pilih Paket</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-content">
+                <div class="discount-badge"> FAVORIT</div>
+                <h1>Fudgy Brownies Choco Chips</h1>
+                <p class="tagline">"Brownies fudgy dengan lelehan choco chips yang meledak di mulut!"</p>
+                <div class="price-tag">Rp28.000</div>
+                <a href="#menu" class="btn-order"><i class="fas fa-fire"></i> Coba Sekarang</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-content">
+                <div class="discount-badge">✨ RECOMMENDED</div>
+                <h1>Puding Cokelat Keju</h1>
+                <p class="tagline">"Puding lembut dengan lapisan cokelat dan taburan keju. Manis dan gurih berpadu sempurna!"</p>
+                <div class="price-tag">Rp12.000</div>
+                <a href="#menu" class="btn-order"><i class="fas fa-ice-cream"></i> Pesan Sekarang</a>
+            </div>
+        </div>
+
+        <div class="slider-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+        <div class="slider-arrow prev" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></div>
+        <div class="slider-arrow next" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></div>
+    </section>
+
+    <section class="keunggulan">
+        <div class="keunggulan-item">
+            <i class="fas fa-fire"></i>
+            <h4>Fresh Dibuat</h4>
+            <p>Dipesan baru dibuat</p>
+        </div>
+        <div class="keunggulan-item">
+            <i class="fas fa-leaf"></i>
+            <h4>Bahan Pilihan</h4>
+            <p>Kualitas premium</p>
+        </div>
+        <div class="keunggulan-item">
+            <i class="fas fa-motorcycle"></i>
+            <h4>Gratis Ongkir</h4>
+            <p>Min. Rp50.000 Cibodas</p>
+        </div>
+        <div class="keunggulan-item">
+            <i class="fas fa-gift"></i>
+            <h4>Kemasan Premium</h4>
+            <p>Cocok untuk hampers</p>
+        </div>
+    </section>
+
+    <section class="cara-pesan">
+        <h2 class="section-title">Cara Pesan Mudah</h2>
+        <div class="steps-grid">
+            <div class="step-item">
+                <div class="step-icon"><i class="fas fa-mouse-pointer"></i></div>
+                <h4>1. Pilih Menu</h4>
+                <p>Pilih camilan favoritmu dari daftar menu kami</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon"><i class="fas fa-shopping-cart"></i></div>
+                <h4>2. Masukkan Keranjang</h4>
+                <p>Atur jumlah dan lengkapi data pemesanan</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon"><i class="fab fa-whatsapp"></i></div>
+                <h4>3. Kirim via WhatsApp</h4>
+                <p>Pesanan otomatis terkirim ke admin kami</p>
+            </div>
+            <div class="step-item">
+                <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                <h4>4. Konfirmasi & Bayar</h4>
+                <p>Tunggu konfirmasi dan selesaikan pembayaran</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+        <h2 class="section-title">Menu Kami</h2>
+        <div class="filter-btns">
+            <button class="filter-btn active" onclick="filterMenu('semua', this)">Semua</button>
+            <button class="filter-btn" onclick="filterMenu('manis', this)">Manis</button>
+            <button class="filter-btn" onclick="filterMenu('gurih', this)">Gurih</button>
+            <button class="filter-btn" onclick="filterMenu('pedas', this)">Pedas</button>
+            <button class="filter-btn" onclick="filterMenu('minuman', this)">Minuman</button>
+            <button class="filter-btn" onclick="filterMenu('paket', this)">Paket Hemat</button>
+        </div>
+        <div class="menu-grid" id="menuGrid"></div>
+    </section>
+
+    <section class="testimoni-section">
+        <h2 class="section-title">Apa Kata Pelanggan Kami?</h2>
+        <div class="testimoni-grid" id="testimoniGrid"></div>
+        <div class="form-testimoni">
+            <h4>Bagikan Pengalamanmu ❤️</h4>
+            <div class="star-rating" id="starRating">
+                <i class="fas fa-star" data-rating="1"></i>
+                <i class="fas fa-star" data-rating="2"></i>
+                <i class="fas fa-star" data-rating="3"></i>
+                <i class="fas fa-star" data-rating="4"></i>
+                <i class="fas fa-star" data-rating="5"></i>
+            </div>
+            <input type="text" id="testimoniName" placeholder="Nama Kamu">
+            <textarea id="testimoniComment" rows="3" placeholder="Tulis komentar kamu..."></textarea>
+            <button class="btn-submit-testimoni" onclick="submitTestimoni()">Kirim Ulasan</button>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <h2 class="section-title">Pertanyaan Umum (FAQ)</h2>
+        <details class="faq-item">
+            <summary>Apakah produk dibuat fresh setiap hari?</summary>
+            <p>Ya, semua camilan kami dibuat fresh berdasarkan pesanan (made by order) untuk menjamin kualitas dan kesegaran rasa.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Berapa lama produk bisa bertahan?</summary>
+            <p>Untuk brownies dan puding, disarankan dikonsumsi dalam 3 hari jika disimpan di suhu ruang, atau 7 hari di dalam kulkas (chiller).</p>
+        </details>
+        <details class="faq-item">
+            <summary>Apakah bisa request tingkat kepedasan?</summary>
+            <p>Tentu bisa! Untuk menu pedas seperti Cireng dan Dimsum Chili Oil, Anda bisa memilih level pedas di catatan pesanan.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Metode pembayaran apa saja yang tersedia?</summary>
+            <p>Kami menerima pembayaran via Transfer Bank (BCA/Mandiri), QRIS, dan E-Wallet (GoPay/OVO/Dana).</p>
+        </details>
+        <details class="faq-item">
+            <summary>Apakah bisa pesan untuk acara atau hampers?</summary>
+            <p>Sangat bisa! Kami menyediakan paket hampers dan catering snack box untuk acara kantor, arisan, atau ulang tahun. Silakan hubungi admin untuk info lebih lanjut.</p>
+        </details>
+    </section>
+
+    <footer>
+        <h3>Dapur Lumer</h3>
+        <p>Dari Dapur Kami, untuk Momen Bahagiamu ❤️</p>
+        <p style="margin-top: 1rem;">
+            <i class="fab fa-whatsapp"></i> 0858-9370-4080 | 
+            <i class="fab fa-instagram"></i> @dapurlumer
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.85rem;">&copy; 2024 Dapur Lumer. All rights reserved.</p>
+    </footer>
+
+    <a href="https://wa.me/6285893704080" class="floating-wa" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div id="cartModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: flex-end;">
+        <div style="background: white; width: 100%; max-width: 400px; height: 100%; padding: 1.5rem; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
+                <h3>Keranjang Pesanan</h3>
+                <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div id="cartItems">
+                <p style="text-align: center; color: #888; margin: 2rem 0;">Keranjang masih kosong.</p>
+            </div>
+            <div style="background: var(--cream); padding: 1rem; border-radius: 8px; margin: 1.5rem 0; display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem;">
+                <span>Total:</span>
+                <span id="cartTotal">Rp0</span>
+            </div>
+            <button onclick="checkoutWA()" style="width: 100%; background: #25D366; color: white; border: none; padding: 1rem; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1rem;">
+                <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let slideInterval;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            slideIndex = n;
+            if (slideIndex >= slides.length) slideIndex = 0;
+            if (slideIndex < 0) slideIndex = slides.length - 1;
+            slides[slideIndex].classList.add('active');
+            dots[slideIndex].classList.add('active');
+        }
+
+        function changeSlide(n) {
+            clearInterval(slideInterval);
+            showSlide(slideIndex + n);
+            startAutoSlide();
+        }
+
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            showSlide(n);
+            startAutoSlide();
+        }
+
+        function startAutoSlide() {
+            slideInterval = setInterval(() => { showSlide(slideIndex + 1); }, 5000);
+        }
+
+        startAutoSlide();
+
+        const products = [
+            { id: 1, name: "Fudgy Brownies Original", category: "manis", price: 25000, tagline: "Brownies cokelat premium dengan tekstur super fudgy dan lumer di setiap gigitan.", img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=600&q=80", badge: "Best Seller" },
+            { id: 2, name: "Fudgy Brownies Choco Chips", category: "manis", price: 28000, tagline: "Brownies fudgy dengan lelehan choco chips yang meledak di mulut.", img: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=600&q=80", badge: "Favorit" },
+            { id: 3, name: "Cireng Isi Ayam Pedas", category: "pedas", price: 15000, tagline: "Cireng renyah di luar, lembut di dalam, diisi dengan ayam suwir berbumbu pedas.", img: "https://images.unsplash.com/photo-1626804475297-411dbe6314c3?auto=format&fit=crop&w=600&q=80", badge: "Pedas" },
+            { id: 4, name: "Risol Mayo", category: "gurih", price: 8000, tagline: "Risol crispy dengan isian ragout ayam, telur, dan mayo creamy yang lumer.", img: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=600&q=80", badge: "Favorit" },
+            { id: 5, name: "Dimsum Chili Oil", category: "gurih", price: 22000, tagline: "Dimsum ayam lembut dengan kulit tipis, disiram chili oil gurih pedas.", img: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=600&q=80", badge: "Spicy" },
+            { id: 6, name: "Puding Cokelat Keju", category: "manis", price: 12000, tagline: "Puding lembut dengan lapisan cokelat dan taburan keju.", img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80", badge: "Recommended" },
+            { id: 7, name: "Es Cokelat Fudgy", category: "minuman", price: 15000, tagline: "Susu cokelat kental dengan potongan brownies fudgy di dalamnya!", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80", badge: "Creamy" },
+            { id: 8, name: "Es Kopi Susu Gula Aren", category: "minuman", price: 18000, tagline: "Kopi susu creamy dengan manisnya gula aren asli.", img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80", badge: "Best Seller" },
+            { id: 9, name: "Paket Ngemil Santai", category: "paket", price: 41000, tagline: "Cireng Isi (2) + Risol Mayo (2) + Es Teh Manis (2).", img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80", badge: "Populer" },
+            { id: 10, name: "Paket Manis", category: "paket", price: 45000, tagline: "Fudgy Brownies + Puding Cokelat + Es Cokelat.", img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&q=80", badge: "Hemat" }
+        ];
+
+        let cart = [];
+        const defaultTestimoni = [
+            { name: "Siti R.", rating: 5, comment: "Browniesnya beneran lumer di mulut! Gak terlalu manis, pas banget.", date: "2 hari lalu" },
+            { name: "Budi S.", rating: 5, comment: "Cireng isinya banyak, pedasnya nampol. Bakal order lagi!", date: "5 hari lalu" },
+            { name: "Dewi L.", rating: 4, comment: "Dimsum chili oil-nya enak banget. Pengiriman cepat!", date: "1 minggu lalu" }
+        ];
+        let testimoniList = JSON.parse(localStorage.getItem('dapurLumerTestimoni')) || defaultTestimoni;
+        let selectedRating = 0;
+
+        function renderMenu(filter = 'semua') {
+            const grid = document.getElementById('menuGrid');
+            grid.innerHTML = '';
+            const filtered = filter === 'semua' ? products : products.filter(p => p.category === filter);
+            
+            filtered.forEach(p => {
+                let badgeClass = '';
+                if (p.badge === 'Best Seller') badgeClass = 'best';
+                else if (p.badge === 'Favorit') badgeClass = 'favorit';
+                
+                const badgeHTML = p.badge ? '<div class="badge ' + badgeClass + '">' + p.badge + '</div>' : '';
+
+                grid.innerHTML += '<div class="product-card">' + badgeHTML + 
+                    '<img src="' + p.img + '" alt="' + p.name + '" class="product-image">' +
+                    '<div class="product-info"><h3>' + p.name + '</h3>' +
+                    '<p class="product-tagline">"' + p.tagline + '"</p>' +
+                    '<div class="product-footer"><div class="price">Rp' + p.price.toLocaleString('id-ID') + '</div>' +
+                    '<button class="add-btn" onclick="addToCart(' + p.id + ')"><i class="fas fa-plus"></i></button></div></div></div>';
+            });
+        }
+
+        function filterMenu(category, btn) {
+            renderMenu(category);
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) existing.qty++;
+            else cart.push({ ...product, qty: 1 });
+            updateCartUI();
+            toggleCart();
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            cartCount.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #888; margin: 2rem 0;">Keranjang masih kosong.</p>';
+                cartTotal.innerText = 'Rp0';
+                return;
+            }
+
+            let total = 0;
+            cartItems.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0;">' +
+                    '<div><h4 style="font-size: 1rem; margin-bottom: 0.2rem;">' + item.name + '</h4>' +
+                    '<p style="font-size: 0.9rem; color: var(--cokelat-muda);">Rp' + item.price.toLocaleString('id-ID') + ' x ' + item.qty + '</p></div>' +
+                    '<div style="display: flex; align-items: center; gap: 0.5rem;">' +
+                    '<button onclick="changeQty(' + item.id + ', -1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer;">-</button>' +
+                    '<span>' + item.qty + '</span>' +
+                    '<button onclick="changeQty(' + item.id + ', 1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer;">+</button>' +
+                    '</div></div>';
+            }).join('');
+            cartTotal.innerText = 'Rp' + total.toLocaleString('id-ID');
+        }
+
+        function changeQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += change;
+                if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function checkoutWA() {
+            if (cart.length === 0) { alert("Keranjang masih kosong!"); return; }
+            let message = "Halo Dapur Lumer, saya ingin memesan:\n\n";
+            let subtotal = 0;
+            cart.forEach(item => {
+                const totalItem = item.price * item.qty;
+                subtotal += totalItem;
+                message += '- ' + item.name + ' x' + item.qty + ' = Rp' + totalItem.toLocaleString('id-ID') + '\n';
+            });
+            message += '\n*Total:* Rp' + subtotal.toLocaleString('id-ID') + '\n\nMohon dikonfirmasi ketersediaannya. Terima kasih!';
+            const phoneNumber = "6285893704080";
+            window.open('https://wa.me/' + phoneNumber + '?text=' + encodeURIComponent(message), '_blank');
+        }
+
+        function renderTestimoni() {
+            document.getElementById('testimoniGrid').innerHTML = testimoniList.map(t => 
+                '<div class="testimoni-card">' +
+                '<div class="stars">' + '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating) + '</div>' +
+                '<p class="comment">"' + t.comment + '"</p>' +
+                '<p class="author">— ' + t.name + ' <span style="font-weight: 400; color: #999; font-size: 0.8rem;">• ' + t.date + '</span></p></div>'
+            ).join('');
+        }
+
+        function submitTestimoni() {
+            const name = document.getElementById('testimoniName').value;
+            const comment = document.getElementById('testimoniComment').value;
+            if (!name || !comment || selectedRating === 0) { alert("Mohon isi nama, komentar, dan pilih rating bintang ya!"); return; }
+            testimoniList.unshift({ name: name, rating: selectedRating, comment: comment, date: "Baru saja" });
+            localStorage.setItem('dapurLumerTestimoni', JSON.stringify(testimoniList));
+            document.getElementById('testimoniName').value = '';
+            document.getElementById('testimoniComment').value = '';
+            selectedRating = 0;
+            updateStarDisplay();
+            renderTestimoni();
+            alert("Terima kasih atas ulasannya! ❤️");
+        }
+
+        function updateStarDisplay() {
+            document.querySelectorAll('#starRating i').forEach((star, index) => {
+                star.classList.toggle('active', index < selectedRating);
+            });
+        }
+
+        document.querySelectorAll('#starRating i').forEach(star => {
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.getAttribute('data-rating'));
+                updateStarDisplay();
+            });
+        });
+
+        renderMenu();
+        renderTestimoni();
+    </script>
+</body>
+</html>
