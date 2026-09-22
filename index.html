@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dapur Lumer - Camilan Premium Homemade</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <style>
         :root {
             --cokelat-utama: #5A2E22;
@@ -17,362 +13,44 @@
             --cokelat-muda: #C98254;
             --merah-cabai: #C84630;
             --emas: #D4AF37;
-            --hijau-sage: #78966B;
-            --teks-gelap: #2B211E;
-            --putih: #FFFFFF;
-            --shadow: 0 4px 15px rgba(90, 46, 34, 0.1);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Nunito', sans-serif;
-            background-color: var(--cream);
-            color: var(--teks-gelap);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--cokelat-utama); }
-
-        .promo-banner {
-            background: linear-gradient(90deg, var(--merah-cabai), #E0554D);
-            color: white;
-            text-align: center;
-            padding: 0.8rem;
-            font-size: 0.9rem;
-            font-weight: 700;
-        }
-
-        header {
-            background: var(--putih);
-            padding: 0.5rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        body { font-family: 'Nunito', sans-serif; background-color: var(--cream); color: #2B211E; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--cokelat-utama); }
         
-        .logo { display: flex; align-items: center; }
-        .logo img { height: 90px; width: auto; transition: 0.3s; }
-        .logo img:hover { transform: scale(1.05); }
+        .promo-banner { background: var(--merah-cabai); color: white; text-align: center; padding: 0.8rem; font-weight: 700; }
+        header { background: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo img { height: 70px; }
+        .cart-btn { background: var(--cokelat-utama); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 700; }
         
-        .cart-btn {
-            background: var(--cokelat-utama);
-            color: var(--putih);
-            border: none;
-            padding: 0.9rem 1.8rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(90, 46, 34, 0.3);
-        }
-        .cart-btn:hover { background: var(--merah-cabai); transform: translateY(-2px); }
-        .cart-count { 
-            background: var(--merah-cabai); color: white; border-radius: 50%; 
-            width: 24px; height: 24px; display: flex; align-items: center; 
-            justify-content: center; font-size: 0.8rem; font-weight: 800;
-        }
-
-        .hero-slider { 
-            position: relative; 
-            height: 600px; 
-            overflow: hidden;
-            background: linear-gradient(135deg, #5A2E22, #3a1e16);
-        }
-        .slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; transition: opacity 1s ease-in-out;
-            display: flex; align-items: center; padding: 0 5%;
-        }
-        .slide.active { opacity: 1; }
-        .slide-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center;
-            background-color: #5A2E22;
-            filter: brightness(0.35);
-            transform: scale(1); transition: transform 6s ease;
-        }
-        .slide.active .slide-bg { transform: scale(1.1); }
-        .slide-content {
-            position: relative; z-index: 2; max-width: 600px; color: white;
-            animation: slideUp 1s ease;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .discount-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--emas), #F0C84A);
-            color: var(--cokelat-utama);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
-        }
-        .slide h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.2rem; font-weight: 800; margin-bottom: 1rem;
-            line-height: 1.1; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); color: white;
-        }
-        .slide .tagline { font-size: 1.2rem; margin-bottom: 1.5rem; line-height: 1.6; opacity: 0.95; }
-        .slide .price-tag { font-size: 2.2rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--emas); }
-        .btn-order {
-            display: inline-flex; align-items: center; gap: 0.8rem;
-            background: linear-gradient(135deg, var(--emas), #F0C84A);
-            color: var(--cokelat-utama);
-            padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none;
-            font-weight: 800; font-size: 1.1rem; transition: 0.3s;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-        }
-        .btn-order:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6); }
-        .slider-dots {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 10px; z-index: 10;
-        }
-        .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.3s; }
-        .dot.active { background: var(--emas); width: 30px; border-radius: 6px; }
-        .slider-arrow {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: rgba(255,255,255,0.2); backdrop-filter: blur(10px);
-            color: white; width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s; z-index: 10; border: 2px solid rgba(255,255,255,0.3);
-        }
-        .slider-arrow:hover { background: rgba(255,255,255,0.4); transform: translateY(-50%) scale(1.1); }
-        .slider-arrow.prev { left: 20px; }
-        .slider-arrow.next { right: 20px; }
-
-        .keunggulan {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem; padding: 3rem 5%; text-align: center; background: white;
-        }
-        .keunggulan-item i { font-size: 2.5rem; color: var(--hijau-sage); margin-bottom: 0.8rem; transition: 0.3s; }
-        .keunggulan-item:hover i { transform: scale(1.2); color: var(--merah-cabai); }
-        .keunggulan-item h4 { font-size: 1.1rem; margin-bottom: 0.3rem; font-weight: 700; }
-
-        .cara-pesan { background: linear-gradient(135deg, var(--cream), #FFF8E8); padding: 4rem 5%; text-align: center; }
-        .section-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 3rem; color: var(--cokelat-utama); }
-        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .step-item { 
-            background: white; padding: 2rem; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s;
-        }
-        .step-item:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
-        .step-icon {
-            width: 80px; height: 80px;
-            background: linear-gradient(135deg, var(--cokelat-muda), var(--merah-cabai));
-            color: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 20px rgba(201, 130, 84, 0.4);
-        }
-        .step-item h4 { margin-bottom: 0.8rem; font-weight: 700; color: var(--cokelat-utama); }
-        .step-item p { font-size: 0.95rem; color: #666; }
-
         .menu-section { padding: 4rem 5%; }
-        .filter-btns { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 3rem; }
-        .filter-btn {
-            background: white; border: 2px solid var(--cokelat-muda); color: var(--cokelat-utama);
-            padding: 0.7rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 700;
-            transition: 0.3s; font-family: 'Nunito', sans-serif;
-        }
-        .filter-btn.active, .filter-btn:hover { 
-            background: var(--cokelat-utama); color: white; 
-            border-color: var(--cokelat-utama); transform: translateY(-2px);
-        }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 2rem; }
+        .filter-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+        .filter-btn { background: white; border: 2px solid var(--cokelat-muda); color: var(--cokelat-utama); padding: 0.7rem 1.5rem; border-radius: 50px; cursor: pointer; font-weight: 700; }
+        .filter-btn.active { background: var(--cokelat-utama); color: white; }
+        
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-        .product-card {
-            background: white; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s; position: relative;
-        }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .product-image { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
-        .badge {
-            position: absolute; top: 15px; right: 15px;
-            background: linear-gradient(135deg, var(--emas), #F0C84A);
-            color: var(--cokelat-utama); padding: 0.5rem 1rem; border-radius: 50px;
-            font-size: 0.85rem; font-weight: 800; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); z-index: 2;
-        }
-        .badge.best { background: linear-gradient(135deg, var(--merah-cabai), #FF6B6B); color: white; }
-        .badge.favorit { background: linear-gradient(135deg, var(--hijau-sage), #8FB07C); color: white; }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .product-card img { width: 100%; height: 220px; object-fit: cover; }
+        .badge { position: absolute; top: 15px; right: 15px; background: var(--emas); color: var(--cokelat-utama); padding: 0.5rem 1rem; border-radius: 50px; font-weight: 800; font-size: 0.85rem; }
         .product-info { padding: 1.5rem; }
-        .product-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--cokelat-utama); }
-        .product-tagline { font-size: 0.9rem; color: #666; margin-bottom: 1rem; font-style: italic; line-height: 1.5; }
-        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .product-info h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .product-info p { color: #666; font-size: 0.9rem; margin-bottom: 1rem; font-style: italic; }
         .price { font-weight: 800; color: var(--merah-cabai); font-size: 1.4rem; }
-        .add-btn {
-            background: linear-gradient(135deg, var(--cokelat-utama), var(--merah-cabai));
-            color: white; border: none; width: 42px; height: 42px; border-radius: 50%;
-            cursor: pointer; font-size: 1.3rem; transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(90, 46, 34, 0.3);
-        }
-        .add-btn:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 6px 20px rgba(200, 70, 48, 0.5); }
-
-        .testimoni-section { background: var(--putih); padding: 4rem 5%; margin: 2rem 0; }
-        .testimoni-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .testimoni-card { background: var(--cream); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); transition: 0.3s; }
-        .testimoni-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .testimoni-card .stars { color: #FFD700; margin-bottom: 0.5rem; font-size: 1.1rem; }
-        .testimoni-card .comment { font-style: italic; color: var(--teks-gelap); margin-bottom: 1rem; }
-        .testimoni-card .author { font-weight: 700; color: var(--cokelat-utama); font-size: 0.9rem; }
-        .form-testimoni { max-width: 500px; margin: 2rem auto 0; background: var(--cream); padding: 1.5rem; border-radius: 12px; }
-        .form-testimoni h4 { margin-bottom: 1rem; text-align: center; }
-        .star-rating { display: flex; justify-content: center; gap: 0.5rem; margin: 1rem 0; font-size: 1.5rem; cursor: pointer; }
-        .star-rating i { color: #ddd; transition: 0.2s; }
-        .star-rating i.active, .star-rating i:hover { color: #FFD700; }
-        .form-testimoni input, .form-testimoni textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem; font-family: inherit; }
-        .btn-submit-testimoni { background: var(--cokelat-utama); color: white; border: none; padding: 0.8rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; width: 100%; }
-        .btn-submit-testimoni:hover { background: var(--merah-cabai); }
-
-        .faq-section { padding: 4rem 5%; max-width: 800px; margin: 0 auto; }
-        .faq-item { background: var(--putih); margin-bottom: 1rem; border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
-        .faq-item summary { padding: 1.2rem; cursor: pointer; font-weight: 700; color: var(--cokelat-utama); list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        .faq-item summary::-webkit-details-marker { display: none; }
-        .faq-item summary::after { content: '+'; font-size: 1.5rem; color: var(--merah-cabai); transition: 0.3s; }
-        .faq-item[open] summary::after { transform: rotate(45deg); }
-        .faq-item p { padding: 0 1.2rem 1.2rem; color: #555; font-size: 0.95rem; }
-
-        .floating-wa {
-            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white;
-            width: 65px; height: 65px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 2rem;
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); z-index: 999;
-            text-decoration: none; transition: 0.3s; animation: pulse-wa 2s infinite;
-        }
-        @keyframes pulse-wa {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-        .floating-wa:hover { transform: scale(1.1); }
-
-        footer { background: var(--cokelat-utama); color: var(--cream); text-align: center; padding: 3rem 1rem; margin-top: 4rem; }
-        footer h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem; color: var(--cream); }
-
-        .db-status {
-            position: fixed;
-            top: 50px;
-            right: 20px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            z-index: 998;
-            display: none;
-        }
-        .db-status.online { background: var(--hijau-sage); color: white; display: block; }
-        .db-status.offline { background: var(--merah-cabai); color: white; display: block; }
-
-        @media (max-width: 768px) {
-            header { padding: 0.5rem 4%; }
-            .logo img { height: 70px; }
-            .hero-slider { height: 500px; }
-            .slide h1 { font-size: 2rem; }
-            .slide .tagline { font-size: 1rem; }
-            .section-title { font-size: 2rem; }
-            .menu-grid { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .logo img { height: 60px; }
-            .cart-btn span:not(.cart-count) { display: none; }
-            .cart-btn { padding: 0.7rem; }
-        }
+        
+        .floating-wa { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; text-decoration: none; }
+        footer { background: var(--cokelat-utama); color: var(--cream); text-align: center; padding: 2rem; margin-top: 4rem; }
     </style>
 </head>
 <body>
-
     <div class="promo-banner">GRATIS ONGKIR untuk pemesanan minimal Rp50.000 area Cibodas! ❤️</div>
-
+    
     <header>
-        <a href="#" class="logo">
-            <img src="https://i.imgur.com/wKy7oJk.jpeg" alt="Dapur Lumer">
-        </a>
-        <button class="cart-btn" onclick="toggleCart()">
-            <i class="fas fa-shopping-cart"></i> 
-            <span>Keranjang</span>
-            <span class="cart-count" id="cartCount">0</span>
-        </button>
+        <div class="logo"><img src="https://i.imgur.com/wKy7oJk.jpeg" alt="Dapur Lumer"></div>
+        <button class="cart-btn" onclick="alert('Hubungi WA: 0858-9370-4080')"><i class="fas fa-shopping-cart"></i> Keranjang</button>
     </header>
-
-    <section class="hero-slider">
-        <div class="slide active">
-            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-            <div class="slide-content">
-                <div class="discount-badge">⭐ BEST SELLER</div>
-                <h1>Fudgy Brownies Original</h1>
-                <p class="tagline">"Brownies cokelat premium dengan tekstur super fudgy dan lumer di setiap gigitan!"</p>
-                <div class="price-tag">Rp25.000</div>
-                <a href="#menu" class="btn-order"><i class="fas fa-shopping-bag"></i> Pesan Sekarang</a>
-            </div>
-        </div>
-        <div class="slide">
-            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-            <div class="slide-content">
-                <div class="discount-badge">🎁 POPULER</div>
-                <h1>Paket Ngemil Santai</h1>
-                <p class="tagline">"Paket lengkap untuk ngemil bareng! Cireng Isi + Risol Mayo + Es Teh Manis."</p>
-                <div class="price-tag">Rp41.000</div>
-                <a href="#menu" class="btn-order"><i class="fas fa-gift"></i> Pilih Paket</a>
-            </div>
-        </div>
-        <div class="slide">
-            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-            <div class="slide-content">
-                <div class="discount-badge">❤️ FAVORIT</div>
-                <h1>Fudgy Brownies Choco Chips</h1>
-                <p class="tagline">"Brownies fudgy dengan lelehan choco chips yang meledak di mulut!"</p>
-                <div class="price-tag">Rp28.000</div>
-                <a href="#menu" class="btn-order"><i class="fas fa-fire"></i> Coba Sekarang</a>
-            </div>
-        </div>
-        <div class="slide">
-            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/1343465/pexels-photo-1343465.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
-            <div class="slide-content">
-                <div class="discount-badge">✨ RECOMMENDED</div>
-                <h1>Puding Cokelat Keju</h1>
-                <p class="tagline">"Puding lembut dengan lapisan cokelat dan taburan keju. Manis dan gurih berpadu sempurna!"</p>
-                <div class="price-tag">Rp12.000</div>
-                <a href="#menu" class="btn-order"><i class="fas fa-ice-cream"></i> Pesan Sekarang</a>
-            </div>
-        </div>
-        <div class="slider-dots">
-            <span class="dot active" onclick="currentSlide(0)"></span>
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-        </div>
-        <div class="slider-arrow prev" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></div>
-        <div class="slider-arrow next" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></div>
-    </section>
-
-    <section class="keunggulan">
-        <div class="keunggulan-item"><i class="fas fa-fire"></i><h4>Fresh Dibuat</h4><p>Dipesan baru dibuat</p></div>
-        <div class="keunggulan-item"><i class="fas fa-leaf"></i><h4>Bahan Pilihan</h4><p>Kualitas premium</p></div>
-        <div class="keunggulan-item"><i class="fas fa-motorcycle"></i><h4>Gratis Ongkir</h4><p>Min. Rp50.000 Cibodas</p></div>
-        <div class="keunggulan-item"><i class="fas fa-gift"></i><h4>Kemasan Premium</h4><p>Cocok untuk hampers</p></div>
-    </section>
-
-    <section class="cara-pesan">
-        <h2 class="section-title">Cara Pesan Mudah</h2>
-        <div class="steps-grid">
-            <div class="step-item"><div class="step-icon"><i class="fas fa-mouse-pointer"></i></div><h4>1. Pilih Menu</h4><p>Pilih camilan favoritmu dari daftar menu kami</p></div>
-            <div class="step-item"><div class="step-icon"><i class="fas fa-shopping-cart"></i></div><h4>2. Masukkan Keranjang</h4><p>Atur jumlah dan lengkapi data pemesanan</p></div>
-            <div class="step-item"><div class="step-icon"><i class="fab fa-whatsapp"></i></div><h4>3. Kirim via WhatsApp</h4><p>Pesanan otomatis terkirim ke admin kami</p></div>
-            <div class="step-item"><div class="step-icon"><i class="fas fa-check-circle"></i></div><h4>4. Konfirmasi & Bayar</h4><p>Tunggu konfirmasi dan selesaikan pembayaran</p></div>
-        </div>
-    </section>
-
-    <section id="menu" class="menu-section">
+    
+    <section class="menu-section">
         <h2 class="section-title">Menu Kami</h2>
         <div class="filter-btns">
             <button class="filter-btn active" onclick="filterMenu('semua', this)">Semua</button>
@@ -382,341 +60,144 @@
             <button class="filter-btn" onclick="filterMenu('minuman', this)">Minuman</button>
             <button class="filter-btn" onclick="filterMenu('paket', this)">Paket Hemat</button>
         </div>
-        <div class="menu-grid" id="menuGrid"></div>
-    </section>
-
-    <section class="testimoni-section">
-        <h2 class="section-title">Apa Kata Pelanggan Kami?</h2>
-        <div class="testimoni-grid" id="testimoniGrid"></div>
-        <div class="form-testimoni">
-            <h4>Bagikan Pengalamanmu ❤️</h4>
-            <div class="star-rating" id="starRating">
-                <i class="fas fa-star" data-rating="1"></i><i class="fas fa-star" data-rating="2"></i>
-                <i class="fas fa-star" data-rating="3"></i><i class="fas fa-star" data-rating="4"></i>
-                <i class="fas fa-star" data-rating="5"></i>
+        
+        <div class="menu-grid" id="menuGrid">
+            <!-- Produk 1 -->
+            <div class="product-card" data-kategori="manis">
+                <div class="badge">Best Seller</div>
+                <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476d?w=600" alt="Brownies">
+                <div class="product-info">
+                    <h3>Fudgy Brownies Original</h3>
+                    <p>Brownies cokelat premium dengan tekstur super fudgy</p>
+                    <div class="price">Rp25.000</div>
+                </div>
             </div>
-            <input type="text" id="testimoniName" placeholder="Nama Kamu">
-            <textarea id="testimoniComment" rows="3" placeholder="Tulis komentar kamu..."></textarea>
-            <button class="btn-submit-testimoni" onclick="submitTestimoni()">Kirim Ulasan</button>
+            
+            <!-- Produk 2 -->
+            <div class="product-card" data-kategori="manis">
+                <div class="badge">Favorit</div>
+                <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=600" alt="Brownies Choco">
+                <div class="product-info">
+                    <h3>Fudgy Brownies Choco Chips</h3>
+                    <p>Brownies fudgy dengan lelehan choco chips</p>
+                    <div class="price">Rp28.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 3 -->
+            <div class="product-card" data-kategori="pedas">
+                <div class="badge">Pedas</div>
+                <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600" alt="Cireng">
+                <div class="product-info">
+                    <h3>Cireng Isi Ayam Pedas</h3>
+                    <p>Cireng renyah dengan isian ayam suwir pedas</p>
+                    <div class="price">Rp15.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 4 -->
+            <div class="product-card" data-kategori="gurih">
+                <div class="badge">Favorit</div>
+                <img src="https://images.unsplash.com/photo-1626074353765-517a681e40be?w=600" alt="Risol">
+                <div class="product-info">
+                    <h3>Risol Mayo</h3>
+                    <p>Risol crispy dengan isian ragout dan mayo</p>
+                    <div class="price">Rp8.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 5 -->
+            <div class="product-card" data-kategori="gurih">
+                <div class="badge">Spicy</div>
+                <img src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=600" alt="Dimsum">
+                <div class="product-info">
+                    <h3>Dimsum Chili Oil</h3>
+                    <p>Dimsum ayam dengan chili oil gurih pedas</p>
+                    <div class="price">Rp22.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 6 -->
+            <div class="product-card" data-kategori="manis">
+                <div class="badge">Recommended</div>
+                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600" alt="Puding">
+                <div class="product-info">
+                    <h3>Puding Cokelat Keju</h3>
+                    <p>Puding lembut dengan cokelat dan keju</p>
+                    <div class="price">Rp12.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 7 -->
+            <div class="product-card" data-kategori="minuman">
+                <div class="badge">Creamy</div>
+                <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600" alt="Es Cokelat">
+                <div class="product-info">
+                    <h3>Es Cokelat Fudgy</h3>
+                    <p>Susu cokelat kental dengan brownies</p>
+                    <div class="price">Rp15.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 8 -->
+            <div class="product-card" data-kategori="minuman">
+                <div class="badge">Best Seller</div>
+                <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600" alt="Kopi Susu">
+                <div class="product-info">
+                    <h3>Es Kopi Susu Gula Aren</h3>
+                    <p>Kopi susu creamy dengan gula aren</p>
+                    <div class="price">Rp18.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 9 -->
+            <div class="product-card" data-kategori="paket">
+                <div class="badge">Populer</div>
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600" alt="Paket">
+                <div class="product-info">
+                    <h3>Paket Ngemil Santai</h3>
+                    <p>Cireng (2) + Risol (2) + Es Teh (2)</p>
+                    <div class="price">Rp41.000</div>
+                </div>
+            </div>
+            
+            <!-- Produk 10 -->
+            <div class="product-card" data-kategori="paket">
+                <div class="badge">Hemat</div>
+                <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600" alt="Paket Manis">
+                <div class="product-info">
+                    <h3>Paket Manis</h3>
+                    <p>Brownies + Puding + Es Cokelat</p>
+                    <div class="price">Rp45.000</div>
+                </div>
+            </div>
         </div>
     </section>
-
-    <section class="faq-section">
-        <h2 class="section-title">Pertanyaan Umum (FAQ)</h2>
-        <details class="faq-item"><summary>Apakah produk dibuat fresh setiap hari?</summary><p>Ya, semua camilan kami dibuat fresh berdasarkan pesanan (made by order) untuk menjamin kualitas dan kesegaran rasa.</p></details>
-        <details class="faq-item"><summary>Berapa lama produk bisa bertahan?</summary><p>Untuk brownies dan puding, disarankan dikonsumsi dalam 3 hari jika disimpan di suhu ruang, atau 7 hari di dalam kulkas (chiller).</p></details>
-        <details class="faq-item"><summary>Apakah bisa request tingkat kepedasan?</summary><p>Tentu bisa! Untuk menu pedas seperti Cireng dan Dimsum Chili Oil, Anda bisa memilih level pedas di catatan pesanan.</p></details>
-        <details class="faq-item"><summary>Metode pembayaran apa saja yang tersedia?</summary><p>Kami menerima pembayaran via Transfer Bank (BCA/Mandiri), QRIS, dan E-Wallet (GoPay/OVO/Dana).</p></details>
-        <details class="faq-item"><summary>Apakah bisa pesan untuk acara atau hampers?</summary><p>Sangat bisa! Kami menyediakan paket hampers dan catering snack box untuk acara kantor, arisan, atau ulang tahun. Silakan hubungi admin untuk info lebih lanjut.</p></details>
-    </section>
-
+    
+    <a href="https://wa.me/6285893704080" class="floating-wa"><i class="fab fa-whatsapp"></i></a>
+    
     <footer>
         <h3>Dapur Lumer</h3>
         <p>Dari Dapur Kami, untuk Momen Bahagiamu ❤️</p>
-        <p style="margin-top: 1rem;"><i class="fab fa-whatsapp"></i> 0858-9370-4080 | <i class="fab fa-instagram"></i> @dapurlumer</p>
-        <p style="margin-top: 1rem; font-size: 0.85rem;">&copy; 2024 Dapur Lumer. All rights reserved.</p>
+        <p>📞 0858-9370-4080 | 📱 @dapurlumer</p>
     </footer>
-
-    <a href="https://wa.me/6285893704080" class="floating-wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
-
-    <div id="dbStatus" class="db-status"></div>
-
-    <div id="cartModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: flex-end;">
-        <div style="background: white; width: 100%; max-width: 400px; height: 100%; padding: 1.5rem; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #eee;">
-                <h3>Keranjang Pesanan</h3>
-                <button onclick="toggleCart()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-            </div>
-            <div id="cartItems"><p style="text-align: center; color: #888; margin: 2rem 0;">Keranjang masih kosong.</p></div>
-            <div style="background: var(--cream); padding: 1rem; border-radius: 8px; margin: 1.5rem 0; display: flex; justify-content: space-between; font-weight: 700; font-size: 1.1rem;">
-                <span>Total:</span><span id="cartTotal">Rp0</span>
-            </div>
-            <button onclick="checkoutWA()" style="width: 100%; background: #25D366; color: white; border: none; padding: 1rem; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1rem;">
-                <i class="fab fa-whatsapp"></i> Pesan via WhatsApp
-            </button>
-        </div>
-    </div>
-
+    
     <script>
-        // ==========================================
-        // DATA MENU LOKAL (PASTI MUNCUL)
-        // ==========================================
-        const localMenu = [
-            { id: 1, nama: "Fudgy Brownies Original", kategori: "manis", harga: 25000, deskripsi: "Brownies cokelat premium dengan tekstur super fudgy dan lumer di setiap gigitan.", badge: "Best Seller", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=600&q=80" },
-            { id: 2, nama: "Fudgy Brownies Choco Chips", kategori: "manis", harga: 28000, deskripsi: "Brownies fudgy dengan lelehan choco chips yang meledak di mulut.", badge: "Favorit", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=600&q=80" },
-            { id: 3, nama: "Cireng Isi Ayam Pedas", kategori: "pedas", harga: 15000, deskripsi: "Cireng renyah di luar, lembut di dalam, diisi dengan ayam suwir berbumbu pedas.", badge: "Pedas", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80" },
-            { id: 4, nama: "Risol Mayo", kategori: "gurih", harga: 8000, deskripsi: "Risol crispy dengan isian ragout ayam, telur, dan mayo creamy yang lumer.", badge: "Favorit", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=600&q=80" },
-            { id: 5, nama: "Dimsum Chili Oil", kategori: "gurih", harga: 22000, deskripsi: "Dimsum ayam lembut dengan kulit tipis, disiram chili oil gurih pedas.", badge: "Spicy", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=600&q=80" },
-            { id: 6, nama: "Puding Cokelat Keju", kategori: "manis", harga: 12000, deskripsi: "Puding lembut dengan lapisan cokelat dan taburan keju.", badge: "Recommended", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80" },
-            { id: 7, nama: "Es Cokelat Fudgy", kategori: "minuman", harga: 15000, deskripsi: "Susu cokelat kental dengan potongan brownies fudgy di dalamnya!", badge: "Creamy", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80" },
-            { id: 8, nama: "Es Kopi Susu Gula Aren", kategori: "minuman", harga: 18000, deskripsi: "Kopi susu creamy dengan manisnya gula aren asli.", badge: "Best Seller", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80" },
-            { id: 9, nama: "Paket Ngemil Santai", kategori: "paket", harga: 41000, deskripsi: "Cireng Isi (2) + Risol Mayo (2) + Es Teh Manis (2).", badge: "Populer", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80" },
-            { id: 10, nama: "Paket Manis", kategori: "paket", harga: 45000, deskripsi: "Fudgy Brownies + Puding Cokelat + Es Cokelat.", badge: "Hemat", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&q=80" }
-        ];
-
-        // ==========================================
-        // KONFIGURASI SUPABASE
-        // ==========================================
-        const SUPABASE_URL = 'https://gbjtomwkvdgkldzvxnhx.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdianRvbXdrdmRna2xkenZ4bmh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTYyNTIsImV4cCI6MjEwNTYzMjI1Mn0.S7_uRMfLAHslD_mA0aqfkgaMmWQues_Agg1GdmV1G_U';
-        
-        let supabase = null;
-        let useSupabase = false;
-
-        try {
-            if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('✅ Supabase client created');
-            }
-        } catch (e) {
-            console.warn('⚠️ Supabase init error:', e);
-        }
-
-        let menuData = localMenu;
-        let cart = [];
-        const defaultTestimoni = [
-            { name: "Siti R.", rating: 5, comment: "Browniesnya beneran lumer di mulut! Gak terlalu manis, pas banget.", date: "2 hari lalu" },
-            { name: "Budi S.", rating: 5, comment: "Cireng isinya banyak, pedasnya nampol. Bakal order lagi!", date: "5 hari lalu" },
-            { name: "Dewi L.", rating: 4, comment: "Dimsum chili oil-nya enak banget. Pengiriman cepat!", date: "1 minggu lalu" }
-        ];
-        let testimoniList = JSON.parse(localStorage.getItem('dapurLumerTestimoni')) || defaultTestimoni;
-        let selectedRating = 0;
-
-        // ==========================================
-        // RENDER MENU (PASTI BERFUNGSI)
-        // ==========================================
-        function renderMenuNow(products, filter = 'semua') {
-            const grid = document.getElementById('menuGrid');
-            grid.innerHTML = '';
+        function filterMenu(kategori, btn) {
+            const cards = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.filter-btn');
             
-            const filtered = filter === 'semua' ? products : products.filter(p => p.kategori === filter);
-            
-            if (filtered.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;">Belum ada menu di kategori ini.</p>';
-                return;
-            }
-            
-            filtered.forEach(p => {
-                let badgeClass = '';
-                if (p.badge === 'Best Seller') badgeClass = 'best';
-                else if (p.badge === 'Favorit') badgeClass = 'favorit';
-                
-                const badgeHTML = p.badge ? '<div class="badge ' + badgeClass + '">' + p.badge + '</div>' : '';
-                const harga = Number(p.harga) || 0;
-                const img = p.gambar_url || 'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=Menu';
-                
-                grid.innerHTML += '<div class="product-card">' + badgeHTML + 
-                    '<img src="' + img + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=' + encodeURIComponent(p.nama) + '\'">' +
-                    '<div class="product-info"><h3>' + p.nama + '</h3>' +
-                    '<p class="product-tagline">"' + (p.deskripsi || '') + '"</p>' +
-                    '<div class="product-footer"><div class="price">Rp' + harga.toLocaleString('id-ID') + '</div>' +
-                    '<button class="add-btn" onclick="addToCart(' + p.id + ')"><i class="fas fa-plus"></i></button></div></div></div>';
-            });
-        }
-
-        async function renderMenu(filter = 'semua') {
-            const grid = document.getElementById('menuGrid');
-            const statusEl = document.getElementById('dbStatus');
-            
-            // Tampilkan loading singkat
-            grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;"><i class="fas fa-spinner fa-spin"></i> Memuat menu...</p>';
-            
-            // Coba Supabase
-            if (supabase) {
-                try {
-                    let query = supabase.from('menu').select('*').eq('tersedia', true);
-                    if (filter !== 'semua') {
-                        query = query.eq('kategori', filter);
-                    }
-                    
-                    const { data, error } = await query;
-                    
-                    if (error) {
-                        console.warn('️ Supabase error:', error.message);
-                        showStatus('offline', 'Mode Offline');
-                        menuData = localMenu;
-                    } else if (data && data.length > 0) {
-                        console.log('✅ Supabase connected! Items:', data.length);
-                        showStatus('online', '● Live Database');
-                        menuData = data;
-                        useSupabase = true;
-                    } else {
-                        console.warn('⚠️ No data from Supabase');
-                        showStatus('offline', 'Mode Offline');
-                        menuData = localMenu;
-                    }
-                } catch (e) {
-                    console.warn('⚠️ Supabase fetch failed:', e.message);
-                    showStatus('offline', 'Mode Offline');
-                    menuData = localMenu;
-                }
-            } else {
-                showStatus('offline', 'Mode Offline');
-                menuData = localMenu;
-            }
-            
-            // Render (dari Supabase atau fallback)
-            renderMenuNow(menuData, filter);
-        }
-
-        function showStatus(type, text) {
-            const el = document.getElementById('dbStatus');
-            el.className = 'db-status ' + type;
-            el.innerText = text;
-            setTimeout(() => { el.style.display = 'none'; }, 3000);
-        }
-
-        function filterMenu(category, btn) {
-            renderMenu(category);
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-        }
-
-        function addToCart(id) {
-            const product = menuData.find(p => p.id === id);
-            if (!product) return;
             
-            const existing = cart.find(item => item.id === id);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ 
-                    id: product.id,
-                    name: product.nama,
-                    price: Number(product.harga),
-                    qty: 1 
-                });
-            }
-            updateCartUI();
-            toggleCart();
-        }
-
-        function updateCartUI() {
-            const cartItems = document.getElementById('cartItems');
-            const cartCount = document.getElementById('cartCount');
-            const cartTotal = document.getElementById('cartTotal');
-            cartCount.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<p style="text-align: center; color: #888; margin: 2rem 0;">Keranjang masih kosong.</p>';
-                cartTotal.innerText = 'Rp0';
-                return;
-            }
-
-            let total = 0;
-            cartItems.innerHTML = cart.map(item => {
-                total += item.price * item.qty;
-                return '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0;">' +
-                    '<div><h4 style="font-size: 1rem; margin-bottom: 0.2rem;">' + item.name + '</h4>' +
-                    '<p style="font-size: 0.9rem; color: var(--cokelat-muda);">Rp' + item.price.toLocaleString('id-ID') + ' x ' + item.qty + '</p></div>' +
-                    '<div style="display: flex; align-items: center; gap: 0.5rem;">' +
-                    '<button onclick="changeQty(' + item.id + ', -1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer;">-</button>' +
-                    '<span>' + item.qty + '</span>' +
-                    '<button onclick="changeQty(' + item.id + ', 1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer;">+</button>' +
-                    '</div></div>';
-            }).join('');
-            cartTotal.innerText = 'Rp' + total.toLocaleString('id-ID');
-        }
-
-        function changeQty(id, change) {
-            const item = cart.find(i => i.id === id);
-            if (item) {
-                item.qty += change;
-                if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-            }
-            updateCartUI();
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cartModal');
-            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        function checkoutWA() {
-            if (cart.length === 0) { alert("Keranjang masih kosong!"); return; }
-            let message = "Halo Dapur Lumer, saya ingin memesan:\n\n";
-            let subtotal = 0;
-            cart.forEach(item => {
-                const totalItem = item.price * item.qty;
-                subtotal += totalItem;
-                message += '- ' + item.name + ' x' + item.qty + ' = Rp' + totalItem.toLocaleString('id-ID') + '\n';
-            });
-            message += '\n*Total:* Rp' + subtotal.toLocaleString('id-ID') + '\n\nMohon dikonfirmasi ketersediaannya. Terima kasih!';
-            const phoneNumber = "6285893704080";
-            window.open('https://wa.me/' + phoneNumber + '?text=' + encodeURIComponent(message), '_blank');
-        }
-
-        function renderTestimoni() {
-            document.getElementById('testimoniGrid').innerHTML = testimoniList.map(t => 
-                '<div class="testimoni-card">' +
-                '<div class="stars">' + '★'.repeat(t.rating) + '☆'.repeat(5 - t.rating) + '</div>' +
-                '<p class="comment">"' + t.comment + '"</p>' +
-                '<p class="author">— ' + t.name + ' <span style="font-weight: 400; color: #999; font-size: 0.8rem;">• ' + t.date + '</span></p></div>'
-            ).join('');
-        }
-
-        function submitTestimoni() {
-            const name = document.getElementById('testimoniName').value;
-            const comment = document.getElementById('testimoniComment').value;
-            if (!name || !comment || selectedRating === 0) { alert("Mohon isi nama, komentar, dan pilih rating bintang ya!"); return; }
-            testimoniList.unshift({ name: name, rating: selectedRating, comment: comment, date: "Baru saja" });
-            localStorage.setItem('dapurLumerTestimoni', JSON.stringify(testimoniList));
-            document.getElementById('testimoniName').value = '';
-            document.getElementById('testimoniComment').value = '';
-            selectedRating = 0;
-            updateStarDisplay();
-            renderTestimoni();
-            alert("Terima kasih atas ulasannya! ❤️");
-        }
-
-        function updateStarDisplay() {
-            document.querySelectorAll('#starRating i').forEach((star, index) => {
-                star.classList.toggle('active', index < selectedRating);
+            cards.forEach(card => {
+                if (kategori === 'semua' || card.dataset.kategori === kategori) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         }
-
-        document.querySelectorAll('#starRating i').forEach(star => {
-            star.addEventListener('click', function() {
-                selectedRating = parseInt(this.getAttribute('data-rating'));
-                updateStarDisplay();
-            });
-        });
-
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        let slideInterval;
-
-        function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            slideIndex = n;
-            if (slideIndex >= slides.length) slideIndex = 0;
-            if (slideIndex < 0) slideIndex = slides.length - 1;
-            slides[slideIndex].classList.add('active');
-            dots[slideIndex].classList.add('active');
-        }
-
-        function changeSlide(n) {
-            clearInterval(slideInterval);
-            showSlide(slideIndex + n);
-            startAutoSlide();
-        }
-
-        function currentSlide(n) {
-            clearInterval(slideInterval);
-            showSlide(n);
-            startAutoSlide();
-        }
-
-        function startAutoSlide() {
-            slideInterval = setInterval(() => { showSlide(slideIndex + 1); }, 5000);
-        }
-        startAutoSlide();
-
-        // Initialize - PASTI JALAN
-        renderMenu();
-        renderTestimoni();
     </script>
 </body>
 </html>
