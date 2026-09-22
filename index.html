@@ -9,8 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- SUPABASE SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -83,7 +81,12 @@
             justify-content: center; font-size: 0.8rem; font-weight: 800;
         }
 
-        .hero-slider { position: relative; height: 600px; overflow: hidden; }
+        .hero-slider { 
+            position: relative; 
+            height: 600px; 
+            overflow: hidden;
+            background: linear-gradient(135deg, #5A2E22, #3a1e16);
+        }
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0; transition: opacity 1s ease-in-out;
@@ -93,7 +96,9 @@
         .slide-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover; background-position: center;
-            filter: brightness(0.4); transform: scale(1); transition: transform 6s ease;
+            background-color: #5A2E22;
+            filter: brightness(0.35);
+            transform: scale(1); transition: transform 6s ease;
         }
         .slide.active .slide-bg { transform: scale(1.1); }
         .slide-content {
@@ -288,7 +293,7 @@
 
     <section class="hero-slider">
         <div class="slide active">
-            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
             <div class="slide-content">
                 <div class="discount-badge">⭐ BEST SELLER</div>
                 <h1>Fudgy Brownies Original</h1>
@@ -298,7 +303,7 @@
             </div>
         </div>
         <div class="slide">
-            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
             <div class="slide-content">
                 <div class="discount-badge">🎁 POPULER</div>
                 <h1>Paket Ngemil Santai</h1>
@@ -308,7 +313,7 @@
             </div>
         </div>
         <div class="slide">
-            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
             <div class="slide-content">
                 <div class="discount-badge">❤️ FAVORIT</div>
                 <h1>Fudgy Brownies Choco Chips</h1>
@@ -318,7 +323,7 @@
             </div>
         </div>
         <div class="slide">
-            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1200&q=80');"></div>
+            <div class="slide-bg" style="background-image: url('https://images.pexels.com/photos/1343465/pexels-photo-1343465.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
             <div class="slide-content">
                 <div class="discount-badge">✨ RECOMMENDED</div>
                 <h1>Puding Cokelat Keju</h1>
@@ -418,14 +423,11 @@
     </div>
 
     <script>
-        // ==========================================
-        // 1. KONFIGURASI SUPABASE
-        // ==========================================
         const SUPABASE_URL = 'https://gbjtomwkvdgkldzvxnhx.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdianRvbXdrdmRna2xkenZ4bmh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTYyNTIsImV4cCI6MjEwNTYzMjI1Mn0.S7_uRMfLAHslD_mA0aqfkgaMmWQues_Agg1GdmV1G_U';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let menuData = []; // Menyimpan data menu dari Supabase
+        let menuData = [];
         let cart = [];
         const defaultTestimoni = [
             { name: "Siti R.", rating: 5, comment: "Browniesnya beneran lumer di mulut! Gak terlalu manis, pas banget.", date: "2 hari lalu" },
@@ -435,9 +437,6 @@
         let testimoniList = JSON.parse(localStorage.getItem('dapurLumerTestimoni')) || defaultTestimoni;
         let selectedRating = 0;
 
-        // ==========================================
-        // 2. FUNGSI RENDER MENU DARI SUPABASE
-        // ==========================================
         async function renderMenu(filter = 'semua') {
             const grid = document.getElementById('menuGrid');
             grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;"><i class="fas fa-spinner fa-spin"></i> Memuat menu...</p>';
@@ -455,7 +454,7 @@
                 return;
             }
             
-            menuData = products; // Simpan ke variabel global untuk fungsi addToCart
+            menuData = products;
             grid.innerHTML = '';
             
             if (products.length === 0) {
@@ -471,7 +470,7 @@
                 const badgeHTML = p.badge ? '<div class="badge ' + badgeClass + '">' + p.badge + '</div>' : '';
                 
                 grid.innerHTML += '<div class="product-card">' + badgeHTML + 
-                    '<img src="' + p.gambar_url + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400?text=Menu+Dapur+Lumer\'">' +
+                    '<img src="' + p.gambar_url + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=' + encodeURIComponent(p.nama) + '\'">' +
                     '<div class="product-info"><h3>' + p.nama + '</h3>' +
                     '<p class="product-tagline">"' + p.deskripsi + '"</p>' +
                     '<div class="product-footer"><div class="price">Rp' + Number(p.harga).toLocaleString('id-ID') + '</div>' +
@@ -595,7 +594,6 @@
             });
         });
 
-        // Slider Logic
         let slideIndex = 0;
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
@@ -628,7 +626,6 @@
         }
         startAutoSlide();
 
-        // Initialize
         renderMenu();
         renderTestimoni();
     </script>
