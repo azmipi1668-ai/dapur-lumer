@@ -197,7 +197,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: 0.3s; position: relative;
         }
         .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .product-image { width: 100%; height: 220px; object-fit: cover; }
+        .product-image { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
         .badge {
             position: absolute; top: 15px; right: 15px;
             background: linear-gradient(135deg, var(--emas), #F0C84A);
@@ -423,11 +423,41 @@
     </div>
 
     <script>
+        // ==========================================
+        // KONFIGURASI SUPABASE
+        // ==========================================
         const SUPABASE_URL = 'https://gbjtomwkvdgkldzvxnhx.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdianRvbXdrdmRna2xkenZ4bmh4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNTYyNTIsImV4cCI6MjEwNTYzMjI1Mn0.S7_uRMfLAHslD_mA0aqfkgaMmWQues_Agg1GdmV1G_U';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        let supabase = null;
+        try {
+            if (window.supabase) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('✅ Supabase connected');
+            } else {
+                console.warn('⚠️ Supabase SDK not loaded');
+            }
+        } catch (e) {
+            console.error('❌ Supabase init error:', e);
+        }
 
-        let menuData = [];
+        // ==========================================
+        // DATA FALLBACK (jika Supabase gagal)
+        // ==========================================
+        const fallbackMenu = [
+            { id: 1, nama: "Fudgy Brownies Original", kategori: "manis", harga: 25000, deskripsi: "Brownies cokelat premium dengan tekstur super fudgy dan lumer di setiap gigitan.", badge: "Best Seller", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1606313564200-e75d5e30476d?auto=format&fit=crop&w=600&q=80" },
+            { id: 2, nama: "Fudgy Brownies Choco Chips", kategori: "manis", harga: 28000, deskripsi: "Brownies fudgy dengan lelehan choco chips yang meledak di mulut.", badge: "Favorit", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=600&q=80" },
+            { id: 3, nama: "Cireng Isi Ayam Pedas", kategori: "pedas", harga: 15000, deskripsi: "Cireng renyah di luar, lembut di dalam, diisi dengan ayam suwir berbumbu pedas.", badge: "Pedas", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=600&q=80" },
+            { id: 4, nama: "Risol Mayo", kategori: "gurih", harga: 8000, deskripsi: "Risol crispy dengan isian ragout ayam, telur, dan mayo creamy yang lumer.", badge: "Favorit", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=600&q=80" },
+            { id: 5, nama: "Dimsum Chili Oil", kategori: "gurih", harga: 22000, deskripsi: "Dimsum ayam lembut dengan kulit tipis, disiram chili oil gurih pedas.", badge: "Spicy", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=600&q=80" },
+            { id: 6, nama: "Puding Cokelat Keju", kategori: "manis", harga: 12000, deskripsi: "Puding lembut dengan lapisan cokelat dan taburan keju.", badge: "Recommended", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80" },
+            { id: 7, nama: "Es Cokelat Fudgy", kategori: "minuman", harga: 15000, deskripsi: "Susu cokelat kental dengan potongan brownies fudgy di dalamnya!", badge: "Creamy", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80" },
+            { id: 8, nama: "Es Kopi Susu Gula Aren", kategori: "minuman", harga: 18000, deskripsi: "Kopi susu creamy dengan manisnya gula aren asli.", badge: "Best Seller", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80" },
+            { id: 9, nama: "Paket Ngemil Santai", kategori: "paket", harga: 41000, deskripsi: "Cireng Isi (2) + Risol Mayo (2) + Es Teh Manis (2).", badge: "Populer", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80" },
+            { id: 10, nama: "Paket Manis", kategori: "paket", harga: 45000, deskripsi: "Fudgy Brownies + Puding Cokelat + Es Cokelat.", badge: "Hemat", tersedia: true, gambar_url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=600&q=80" }
+        ];
+
+        let menuData = fallbackMenu; // Default pakai fallback
         let cart = [];
         const defaultTestimoni = [
             { name: "Siti R.", rating: 5, comment: "Browniesnya beneran lumer di mulut! Gak terlalu manis, pas banget.", date: "2 hari lalu" },
@@ -437,21 +467,41 @@
         let testimoniList = JSON.parse(localStorage.getItem('dapurLumerTestimoni')) || defaultTestimoni;
         let selectedRating = 0;
 
+        // ==========================================
+        // FUNGSI RENDER MENU (dengan fallback)
+        // ==========================================
         async function renderMenu(filter = 'semua') {
             const grid = document.getElementById('menuGrid');
             grid.innerHTML = '<p style="text-align:center; padding:2rem; color: #666;"><i class="fas fa-spinner fa-spin"></i> Memuat menu...</p>';
             
-            let query = supabase.from('menu').select('*').eq('tersedia', true);
-            if (filter !== 'semua') {
-                query = query.eq('kategori', filter);
+            let products = fallbackMenu; // Default fallback
+            
+            // Coba ambil dari Supabase
+            if (supabase) {
+                try {
+                    let query = supabase.from('menu').select('*').eq('tersedia', true);
+                    if (filter !== 'semua') {
+                        query = query.eq('kategori', filter);
+                    }
+                    
+                    const { data, error } = await query;
+                    
+                    if (error) {
+                        console.warn('⚠️ Supabase error, pakai fallback:', error.message);
+                    } else if (data && data.length > 0) {
+                        products = data;
+                        console.log('✅ Menu loaded from Supabase:', products.length, 'items');
+                    } else {
+                        console.warn('⚠️ No data from Supabase, pakai fallback');
+                    }
+                } catch (e) {
+                    console.warn('⚠️ Supabase fetch failed, pakai fallback:', e.message);
+                }
             }
             
-            const { data: products, error } = await query;
-            
-            if (error) {
-                console.error('Error:', error);
-                grid.innerHTML = '<p style="text-align:center; color:red;">Gagal memuat menu. Silakan refresh halaman.</p>';
-                return;
+            // Filter fallback jika perlu
+            if (filter !== 'semua') {
+                products = products.filter(p => p.kategori === filter);
             }
             
             menuData = products;
@@ -468,12 +518,13 @@
                 else if (p.badge === 'Favorit') badgeClass = 'favorit';
                 
                 const badgeHTML = p.badge ? '<div class="badge ' + badgeClass + '">' + p.badge + '</div>' : '';
+                const harga = Number(p.harga) || 0;
                 
                 grid.innerHTML += '<div class="product-card">' + badgeHTML + 
-                    '<img src="' + p.gambar_url + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=' + encodeURIComponent(p.nama) + '\'">' +
+                    '<img src="' + (p.gambar_url || 'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=Menu') + '" alt="' + p.nama + '" class="product-image" onerror="this.src=\'https://via.placeholder.com/600x400/5A2E22/FFFFFF?text=' + encodeURIComponent(p.nama) + '\'">' +
                     '<div class="product-info"><h3>' + p.nama + '</h3>' +
-                    '<p class="product-tagline">"' + p.deskripsi + '"</p>' +
-                    '<div class="product-footer"><div class="price">Rp' + Number(p.harga).toLocaleString('id-ID') + '</div>' +
+                    '<p class="product-tagline">"' + (p.deskripsi || '') + '"</p>' +
+                    '<div class="product-footer"><div class="price">Rp' + harga.toLocaleString('id-ID') + '</div>' +
                     '<button class="add-btn" onclick="addToCart(' + p.id + ')"><i class="fas fa-plus"></i></button></div></div></div>';
             });
         }
@@ -626,6 +677,7 @@
         }
         startAutoSlide();
 
+        // Initialize
         renderMenu();
         renderTestimoni();
     </script>
